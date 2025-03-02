@@ -100,7 +100,7 @@ async function start() {
                 video: { url: "https://files.catbox.moe/0hixso.mp4"}, 
                 caption: `*Hello there DEMON-SLAYER-XMD User! 👋🏻* 
 
-Simple, Straightforward, But Loaded With Features 🎊. Meet DEMON-SLAYER-XMD WhatsApp Bot.
+Simple, Straightforward, and Loaded With Features 🎊. Meet DEMON-SLAYER-XMD WhatsApp Bot.
 REPORT ANY PROBLEM TO THE FOLLOWING MAIN DEVS 
  *MAIN DEVS*
 © BRUCE BERA
@@ -175,6 +175,18 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 /*
-            
-    
+           console.log(chalk.green("DEMON-SLAYER-XMD IS CONNECTED SUCCESSFULLY  "));
+            Matrix.sendMessage(Matrix.user.id, { 
+                image: { url: "https://files.catbox.moe/76x3kn.jpg" }, 
+                caption: `*Hello there DEMON-SLAYER-XMD User! 👋🏻* 
 
+Simple, Straightforward, But Loaded With Features 🎊. Meet DEMON-SLAYER-XMD WhatsApp Bot.
+REPORT ANY PROBLEM TO THE FOLLOWING MAIN DEVS 
+ *MAIN DEVS*
+© BRUCE BERA
+© JOEL JAMES  
+© MARISEL 
+                   
+    
+> © MADE BY  CREW SLAYER
+*/
