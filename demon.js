@@ -1,5 +1,3 @@
-
-// coded by 💗
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -10,7 +8,7 @@ import {
     DisconnectReason,
     useMultiFileAuthState,
 } from '@whiskeysockets/baileys';
-import { Handler, Callupdate, GroupUpdate } from './src/event/index.js';
+import { Handler, Callupdate, GroupUpdate } from './SLAYERS/event/index.js';
 import express from 'express';
 import pino from 'pino';
 import fs from 'fs';
@@ -54,7 +52,7 @@ async function downloadSessionData() {
         console.error('Please add your session to SESSION_ID env !!');
         return false;
     }
-    const sessdata = config.SESSION_ID.split("Joel-Md&")[1];
+    const sessdata = config.SESSION_ID.split("DEMON_SLAYERS~")[1];
     const url = `https://pastebin.com/raw/${sessdata}`;
     try {
         const response = await axios.get(url);
@@ -78,14 +76,14 @@ async function start() {
             version,
             logger: pino({ level: 'silent' }),
             printQRInTerminal: useQR,
-            browser: ["ʝσєℓ χ∂", "safari", "3.3"],
+            browser: ["ᴅᴇᴍᴏɴ sʟᴀʏᴇʀ xᴍᴅ", "safari", "3.3"],
             auth: state,
             getMessage: async (key) => {
                 if (store) {
                     const msg = await store.loadMessage(key.remoteJid, key.id);
                     return msg.message || undefined;
                 }
-                return { conversation: "joel md  whatsapp user bot" };
+                return { conversation: "ᴅᴇᴍᴏɴ sʟᴀʏᴇʀ xᴍᴅ whatsapp user bot" };
             }
         });
 
@@ -97,12 +95,12 @@ async function start() {
                 }
             } else if (connection === 'open') {
                 if (initialConnection) {
-                    console.log(chalk.green("DEMON-SLAYER-XMD IS CONNECTED SUCCESSFULLY  "));
-            Matrix.sendMessage(Matrix.user.id, { 
-                image: { url: "https://files.catbox.moe/76x3kn.jpg" }, 
+                console.log(chalk.green("DEMON-SLAYER-XMD IS CONNECTED SUCCESSFULLY"));
+                Matrix.sendMessage(Matrix.user.id, { 
+                video: { url: "https://files.catbox.moe/0hixso.mp4"}, 
                 caption: `*Hello there DEMON-SLAYER-XMD User! 👋🏻* 
 
-Simple, Straightforward, and Loaded With Features 🎊. Meet DEMON-SLAYER-XMD WhatsApp Bot.
+Simple, Straightforward, But Loaded With Features 🎊. Meet DEMON-SLAYER-XMD WhatsApp Bot.
 REPORT ANY PROBLEM TO THE FOLLOWING MAIN DEVS 
  *MAIN DEVS*
 © BRUCE BERA
@@ -110,8 +108,7 @@ REPORT ANY PROBLEM TO THE FOLLOWING MAIN DEVS
 © MARISEL 
                    
     
-> © MADE BY  CREW SLAYER`
-            });
+> © MADE BY  CREW SLAYER` });
                     initialConnection = false;
                 } else {
                     console.log(chalk.blue("♻️ Connection reestablished after restart."));
@@ -171,12 +168,12 @@ async function init() {
 init();
 
 app.get('/', (req, res) => {
-    res.send('am joel bot');
+    res.send('ᴅᴇᴍᴏɴ sʟᴀʏᴇʀ xᴍᴅ');
 });
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-
-//updated by lord joel
+/*
+            
+    
