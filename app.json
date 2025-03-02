@@ -5,7 +5,7 @@
     "whatsapp bot"
   ],
   "logo":"",
-  "repository": "https://github.com/DEMON-SLAYER1/DEMON-SLAYER-XMD",
+  "repository": "https://github.com/DEVELOPER-BERA/DEMONS-SLAYER-XMD",
   "stack": "container",
   "env": { 
       "SESSION_ID": {
