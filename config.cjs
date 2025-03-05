@@ -29,8 +29,8 @@ const config = {
   SUDO_NUMBER: process.env.SUDK_NUMBER || "",
   /*lets add demon slayers phone number (make una update this section)*/
   DEVELOPER_NUMBER1: process.env.DEVELOPER_NUMBER1 || "255714595078",
-  DEVELOPER_NUMBER2: process.env.DEVELOPER_NUMBER2 || "",
-  DEVELOPER_NUMBER3: process.env.DEVELOPER_NUMBER3 || "",
+  DEVELOPER_NUMBER2: process.env.DEVELOPER_NUMBER2 || "254743982206",
+  DEVELOPER_NUMBER3: process.env.DEVELOPER_NUMBER3 || "218942841878",
   GEMINI_KEY: process.env.GEMINI_KEY || "AIzaSyCUPaxfIdZawsKZKqCqJcC-GWiQPCXKTDc",
   WELCOME: process.env.WELCOME !== undefined ? process.env.WELCOME === 'true' : false, 
 };
