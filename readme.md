@@ -56,7 +56,7 @@ src="https://cardivo.vercel.app/api?name=𝙳𝙴𝙼𝙾𝙽%20-𝚂𝙻𝙰�
  
 
 
-<a href='https://dashboard.heroku.com/new?template=https://github.com/DEMON-SLAYER1/DEMON-SLAYER-XMD' target="_blank"><img alt='𝙳𝙴𝙼𝙾𝙽-𝚂𝙻𝙰𝚈𝙴𝚁-𝚇𝙼𝙳' src='https://img.shields.io/badge/DEPLOY NOW-h?color=navy&style=for-the-badge&logo=visualstudiocode'/></a></p>
+<a href='https://dashboard.heroku.com/new?template=https://github.com/Demon-Slayer2/DEMONS-SLAYER-XMD/' target="_blank"><img alt='𝙳𝙴𝙼𝙾𝙽-𝚂𝙻𝙰𝚈𝙴𝚁-𝚇𝙼𝙳' src='https://img.shields.io/badge/DEPLOY NOW-h?color=navy&style=for-the-badge&logo=visualstudiocode'/></a></p>
 
 
 
