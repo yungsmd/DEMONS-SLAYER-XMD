@@ -76,7 +76,7 @@ const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0
        const mode = config.MODE === 'public' ? 'public' : 'private';
        const pref = config.PREFIX;
            
-        const validCommands = ['list', 'help', 'menu'];
+        const validCommands = ['list2', 'help2', 'menu2'];
 
   if (validCommands.includes(cmd)) {
     let msg = generateWAMessageFromContent(m.from, {
