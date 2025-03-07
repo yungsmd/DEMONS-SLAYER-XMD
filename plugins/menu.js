@@ -63,7 +63,7 @@ const test = async (m, Matrix) => {
   const mode = config.MODE === 'public' ? 'public' : 'private';
   const pref = config.PREFIX;
 
-  const validCommands = ['list', 'help', 'menu'];
+  const validCommands = ['list', 'help1', 'menu1'];
 
   if (validCommands.includes(cmd)) {
     const str = `╭━━━〔 *ᴅᴇᴍᴏɴ-sʟᴀʏᴇʀ* 〕━━━┈⊷
