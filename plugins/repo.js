@@ -22,13 +22,13 @@ const repo = async (m, gss) => {
       const repoData = response.data;
 
       // Format the repository information
-      const formattedInfo = `*ʙᴏᴛ ɴᴀᴍᴇ:*\n> ${repoData.name}\n\n*ᴏᴡɴᴇʀ ᴍᴀᴍᴇ:*\n> ${repoData.owner.login}\n\n*sᴛᴀʀ:*\n> ${repoData.stargazers_count}\n\n*ғᴏʀᴋs:*\n> ${repoData.forks_count}\n\n*ɢɪᴛʜᴜʙ ʟɪɴᴋ:*\n> ${repoData.html_url}\n\n*ᴅᴇsᴄʀɪᴘᴛɪᴏɴ:*\n> ${repoData.description || "No description"}\n\n*Don't Forget To Star and Fork Repository*\n\n> > *ᴍᴀᴅᴇ ʙʏ ᴄʀᴇᴡ sʟᴀʏᴇʀ*`;
+      const formattedInfo = `*ʙᴏᴛ ɴᴀᴍᴇ:*\n> ${repoData.name}\n*ᴏᴡɴᴇʀ ᴍᴀᴍᴇ:*\n> ${repoData.owner.login}\n*sᴛᴀʀ:*\n> ${repoData.stargazers_count}\n*ғᴏʀᴋs:*\n> ${repoData.forks_count}\n*ɢɪᴛʜᴜʙ ʟɪɴᴋ:*\n> ${repoData.html_url}\n*ᴅᴇsᴄʀɪᴘᴛɪᴏɴ:*\n> ${repoData.description || "No description"}\n*Don't Forget To Star and Fork Repository*\n> > *ᴍᴀᴅᴇ ʙʏ ᴄʀᴇᴡ sʟᴀʏᴇʀ*`;
 
       // Send an image with the formatted info as a caption
       await gss.sendMessage(
         m.from,
         {
-          image: { url: "https://files.catbox.moe/juroe8.jpg" },
+          image: { url: "https://files.catbox.moe/5kvvfg.jpg" },
           caption: formattedInfo,
           contextInfo: {
             mentionedJid: [m.sender],
