@@ -79,20 +79,20 @@ const test = async (m, Matrix) => {
 ┃★╰──────────────
 ╰━━━━━━━━━━━━━━━┈⊷ 
 > *ʜᴇʏ ${m.pushName} ${pushwish}*
-╭━━〔 *Other Menu* 〕━━┈⊷
-┃◈╭─────────────·๏
-┃◈┃• ${prefix}ping
-┃◈┃• ${prefix}live 
-┃◈┃• ${prefix}alive
-┃◈┃• ${prefix}runtime
-┃◈┃• ${prefix}uptime 
-┃◈┃• ${prefix}repo
-┃◈┃• ${prefix}owner
-┃◈┃• ${prefix}menu
-┃◈┃• ${prefix}menu2
-┃◈┃• ${prefix}restart
-┃◈└───────────┈⊷
-╰──────────────`;
+*╭━━〔 Other Menu 〕━━┈⊷*
+*┃◈╭─────────────·๏*
+*┃◈┃• ${prefix}ping*
+*┃◈┃• ${prefix}live* 
+*┃◈┃• ${prefix}alive*
+*┃◈┃• ${prefix}runtime*
+*┃◈┃• ${prefix}uptime* 
+*┃◈┃• ${prefix}repo*
+*┃◈┃• ${prefix}owner*
+*┃◈┃• ${prefix}menu*
+*┃◈┃• ${prefix}menu2*
+*┃◈┃• ${prefix}restart*
+*┃◈└───────────┈⊷*
+*╰──────────────*`;
 
     await Matrix.sendMessage(m.from, {
       image: fs.readFileSync('./media/slayer7.jpg'),
