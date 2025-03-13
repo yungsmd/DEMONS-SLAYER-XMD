@@ -64,7 +64,7 @@ const test = async (m, Matrix) => {
   const mode = config.MODE === 'public' ? 'public' : 'private';
   const pref = config.PREFIX;
 
-  const validCommands = ['aimenu', 'gptmenu', 'menuai'];
+  const validCommands = ['groupmenu', 'group', 'menuai'];
 
   if (validCommands.includes(cmd)) {
     const str = `╭━━━〔 *ᴅᴇᴍᴏɴ-sʟᴀʏᴇʀ* 〕━━━┈⊷
@@ -101,7 +101,7 @@ const test = async (m, Matrix) => {
 ╰──────────────┈⊷`;
 
     await Matrix.sendMessage(m.from, {
-      image: fs.readFileSync('./media/slayer.jpg'),
+      image: fs.readFileSync('./media/slayer1.jpg'),
       caption: str,
       contextInfo: {
         mentionedJid: [m.sender],
