@@ -5,7 +5,6 @@ import pkg from '@whiskeysockets/baileys';
 const { generateWAMessageFromContent, proto } = pkg;
 import config from '../config.cjs';
 
-
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
 const chatHistoryFile = path.resolve(__dirname, '../mistral_history.json');
@@ -56,8 +55,8 @@ const mistral = async (m, Matrix) => {
     }
 
     const prefix = config.PREFIX;
-const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
-const prompt = m.body.slice(prefix.length + cmd.length).trim();
+    const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
+    const prompt = m.body.slice(prefix.length + cmd.length).trim();
 
     const validCommands = ['ai', 'gpt', 'mistral'];
 
@@ -77,16 +76,14 @@ const prompt = m.body.slice(prefix.length + cmd.length).trim();
 
             await m.React("⏳");
 
-            const response = await fetch('https://matrixcoder.tech/api/ai', {
-                method: 'POST',
+            // Updated API endpoint
+            const apiUrl = `https://api.siputzx.my.id/api/ai/deepseek-r1?content=${encodeURIComponent(prompt)}`;
+
+            const response = await fetch(apiUrl, {
+                method: 'GET', // Assuming the new API uses GET
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    type: "text-generation",
-                    model: "hf/meta-llama/meta-llama-3-8b-instruct",
-                    messages: messages
-                })
+                }
             });
 
             if (!response.ok) {
