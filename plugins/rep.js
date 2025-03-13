@@ -78,6 +78,20 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
                     url: 'https://wa.me/+254790375710?text=',
                   }),
                 },
+                    {
+                  name: 'quick_reply',
+                  buttonParamsJson: JSON.stringify({
+                    display_text: "ᴛᴏ ᴍᴇɴᴜ",
+                    id: ".menu",
+                  }),
+                },
+                 {
+                  name: 'quick_reply',
+                  buttonParamsJson: JSON.stringify({
+                    display_text: "sᴘᴇᴇᴅ",
+                    id: ".ping",
+                  }),
+                },
                 {
                   name: 'cta_url',
                   buttonParamsJson: JSON.stringify({
