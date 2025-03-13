@@ -88,7 +88,7 @@ const mistral = async (m, Matrix) => {
                 },
                 body: JSON.stringify({
                     type: "text-generation",
-                    model: "hf/gpt3/meta-llama-3-8b-instruct",
+                    model: "hf/deepseek-r1?content=",
                     messages: messages
                 })
             });
