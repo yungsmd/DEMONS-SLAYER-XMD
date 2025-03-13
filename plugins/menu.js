@@ -81,14 +81,16 @@ const test = async (m, Matrix) => {
 > *ʜᴇʏ ${m.pushName} ${pushwish}*
 ╭━━〔 *Menu List* 〕━━┈⊷
 ┃◈╭─────────────·๏
-┃◈┃• Convertmenu
-┃◈┃• Download menu
-┃◈┃• Mainmenu
-┃◈┃• Groupmenu
-┃◈┃• Toolmenu
-┃◈┃• Searchmenu
+┃◈┃• *Convertmenu*
+┃◈┃• *Download menu*
+┃◈┃• *Mainmenu*
+┃◈┃• *Groupmenu*
+┃◈┃• *Toolmenu*
+┃◈┃• *Searchmenu*
+┃◈┃• *Othermenu*
 ┃◈└───────────┈⊷
-╰──────────────┈⊷`;
+╰──────────────┈⊷
+> *Choose what you want above*`;
 
     await Matrix.sendMessage(m.from, {
       image: fs.readFileSync('./media/slayer.jpg'),
