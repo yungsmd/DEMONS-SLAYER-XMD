@@ -64,7 +64,7 @@ const test = async (m, Matrix) => {
   const mode = config.MODE === 'public' ? 'public' : 'private';
   const pref = config.PREFIX;
 
-  const validCommands = ['aimenu', 'gptmenu', 'menuai'];
+  const validCommands = ['convertmenu', 'convert', 'menuai'];
 
   if (validCommands.includes(cmd)) {
     const str = `╭━━━〔 *ᴅᴇᴍᴏɴ-sʟᴀʏᴇʀ* 〕━━━┈⊷
@@ -88,6 +88,7 @@ const test = async (m, Matrix) => {
 ┃◈┃• ${prefix}𝙳𝙱𝙸𝙽𝙰𝚁𝚈
 ┃◈┃• ${prefix}𝙴𝙼𝙾𝙹𝙸𝙼𝙸𝚇
 ┃◈┃• ${prefix}𝙼𝙿3
+┃◈┃• ${prefix}vv
 ┃◈└───────────┈⊷
 ╰──────────────┈⊷`;
 
