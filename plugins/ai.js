@@ -81,14 +81,14 @@ const mistral = async (m, Matrix) => {
 
             await m.React("⏳");
 
-            const response = await fetch('https://api.siputzx.my.id/api/ai', {
+            const response = await fetch('https://api.siputzx.my.id/api/aideepseek-r1?content=', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     type: "text-generation",
-                    model: "hf/deepseek-r1?content=",
+                    model: "hfmeta-llama/meta-llama-3-8b-instruct",
                     messages: messages
                 })
             });
