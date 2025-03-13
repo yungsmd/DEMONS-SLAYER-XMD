@@ -93,7 +93,7 @@ const test = async (m, Matrix) => {
 ╰──────────────┈⊷`;
 
     await Matrix.sendMessage(m.from, {
-      image: fs.readFileSync('./media/slayer.jpg'),
+      image: fs.readFileSync('./media/slayer2.jpg'),
       caption: str,
       contextInfo: {
         mentionedJid: [m.sender],
