@@ -61,7 +61,7 @@ const handleRepoCommand = async (m, Matrix, repoUrl) => {
             header: proto.Message.InteractiveMessage.Header.create({
               ...(await prepareWAMessageMedia({
                 image: {
-                  url: 'https://files.catbox.moe/zymr95.jpg',
+                  url: 'https://files.catbox.moe/13kbx5.jpg',
                 },
               }, { upload: Matrix.waUploadToServer })),
               title: '',
