@@ -18,8 +18,8 @@ const LogoCmd = async (m, sock) => {
         isForwarded: true,
         forwardingScore: 999,
         forwardedNewsletterMessageInfo: {
-          newsletterJid: '@newsletter',
-          newsletterName: "120363299029326322@newsletter",
+          newsletterJid: '120363299029326322@newsletter',
+          newsletterName: "Marisel",
           serverMessageId: -1,
         },
         externalAdReply: {
@@ -67,7 +67,7 @@ const LogoCmd = async (m, sock) => {
     // Extract the text after the command; this text is used for the logo
     const text = m.body.slice(prefix.length + cmd.length + 1).trim();
     if (!text) {
-      await sendCommandMessage("⚠️ Please provide text to generate a logo!");
+      await sendCommandMessage("*Please provide text to generate a logo!*");
       return;
     }
 
@@ -95,8 +95,8 @@ const LogoCmd = async (m, sock) => {
             isForwarded: true,
             forwardingScore: 999,
             forwardedNewsletterMessageInfo: {
-              newsletterJid: '@newsletter',
-              newsletterName: "120363299029326322@newsletter",
+              newsletterJid: '120363299029326322@newsletter',
+              newsletterName: "Marisel",
               serverMessageId: -1,
             },
             externalAdReply: {
