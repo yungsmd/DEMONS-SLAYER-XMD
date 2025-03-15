@@ -1,4 +1,4 @@
-import config from '../config.cjs';
+import config from '../../config.cjs';
 
 // Main command function
 const anticallCommand = async (m, Matrix) => {
@@ -11,7 +11,7 @@ const text = m.body.slice(prefix.length + cmd.length).trim();
   const validCommands = ['autostatus', 'autosview', 'autostatusview'];
 
  if (validCommands.includes(cmd)){
-   if (!isCreator) return m.reply("*ᴏᴡɴᴇʀ ᴄᴏᴍᴍᴀɴᴅ*");
+   if (!isCreator) return m.reply("*THIS IS AN OWNER COMMAND*");
     let responseMessage;
 
     if (text === 'on') {
