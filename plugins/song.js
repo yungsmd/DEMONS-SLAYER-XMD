@@ -35,7 +35,7 @@ const video = async (m, Matrix) => {
 
   try {
     // Call API to fetch video details
-    const apiUrl = ("https://apis.davidcyriltech.my.id/youtube/mp3?url=" + encodeURIComponent(_0x165324) + "&apikey=" + "gifted");
+    const apiUrl = 'https://www.dark-yasiya-api.site/download/ytmp3?url=';
     const { data } = await axios.get(apiUrl);
 
     if (!data.success) {
