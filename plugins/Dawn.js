@@ -55,7 +55,7 @@ const play = async (_0x126590, _0x3b9015) => {
             _0x2f856d = "> *ᴍᴀᴅᴇ ʙʏ ᴄʀᴇᴡ sʟᴀʏᴇʀ**";
           } else {
             if (_0x8cd70e === '2') {
-              _0x47e056 = 'https://apis.davidcyriltech.my.id/download/ytmp3?url=' + _0x2da495;
+              _0x47e056 = 'https://api.diioffc.web.id/api/download/ytmp3?url=' + _0x2da495;
               _0x5cf09a = "audio";
               _0x3fb4a3 = "audio/mpeg";
               _0x2f856d = "> *ᴍᴀᴅᴇ ʙʏ ᴄʀᴇᴡ sʟᴀʏᴇʀ*";
