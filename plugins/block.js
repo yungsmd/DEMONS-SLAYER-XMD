@@ -1,4 +1,4 @@
-import config from '../config.cjs';
+import config from '../../config.cjs';
 
 const block = async (m, gss) => {
   try {
@@ -12,7 +12,7 @@ const text = m.body.slice(prefix.length + cmd.length).trim();
 
     if (!validCommands.includes(cmd)) return;
     
-    if (!isCreator) return m.reply("*ᴏᴡɴᴇʀ ᴄᴏᴍᴍᴀɴᴅ*");
+    if (!isCreator) return m.reply("*📛 THIS IS AN OWNER COMMAND*");
 
     let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '') + '@s.whatsapp.net';
     
