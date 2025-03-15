@@ -61,7 +61,6 @@ async function downloadSessionData() {
         console.log("🔒 Session Successfully Loaded !!");
         return true;
     } catch (error) {
-       // console.error('Failed to download session data:', error);
         return false;
     }
 }
@@ -96,9 +95,9 @@ async function start() {
             } else if (connection === 'open') {
                 if (initialConnection) {
                     console.log(chalk.green("Demon slayer Connected"));
-            Matrix.sendMessage(Matrix.user.id, { 
-                image: { url: "https://files.catbox.moe/5kvvfg.jpg" }, 
-                caption: `╭─────────────━┈⊷
+                    Matrix.sendMessage(Matrix.user.id, { 
+                        image: { url: "https://files.catbox.moe/5kvvfg.jpg" }, 
+                        caption: `╭─────────────━┈⊷
 │ *ᴅᴇᴍᴏɴ sʟᴀʏᴇʀ*
 ╰─────────────━┈⊷
 
@@ -108,7 +107,7 @@ async function start() {
 ╰─────────────━┈⊷
 
 > *ᴍᴀᴅᴇ ʙʏ 3 ᴍᴇɴ ᴀʀᴍʏ*`
-            });
+                    });
                     initialConnection = false;
                 } else {
                     console.log(chalk.blue("♻️ Connection reestablished after restart."));
@@ -131,17 +130,28 @@ async function start() {
         Matrix.ev.on('messages.upsert', async (chatUpdate) => {
             try {
                 const mek = chatUpdate.messages[0];
+
+                // Automatically react to messages if enabled
                 if (!mek.key.fromMe && config.AUTO_REACT) {
-                    console.log(mek);
-                    if (mek.message) {
-                        const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                        await doReact(randomEmoji, mek, Matrix);
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    await doReact(randomEmoji, mek, Matrix);
+                }
+
+                // **STATUS VIEW FIX: Detect and View Status Automatically**
+                if (mek.key.remoteJid.endsWith('@broadcast') && mek.message?.imageMessage) {
+                    try {
+                        await Matrix.readMessages([mek.key]);
+                        console.log(chalk.green(`✅ Viewed status from ${mek.key.participant || mek.key.remoteJid}`));
+                    } catch (error) {
+                        console.error('❌ Error marking status as viewed:', error);
                     }
                 }
+                
             } catch (err) {
-                console.error('Error during auto reaction:', err);
+                console.error('Error during auto reaction/status viewing:', err);
             }
         });
+
     } catch (error) {
         console.error('Critical Error:', error);
         process.exit(1);
@@ -168,13 +178,9 @@ async function init() {
 init();
 
 app.get('/', (req, res) => {
-    res.send('am joel bot');
+    res.send('CONNECTED SUCCESSFULL');
 });
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
-
-
-// updated by lord joel 
-
