@@ -8,7 +8,7 @@ const video = async (m, Matrix) => {
   const args = m.body.slice(prefix.length + cmd.length).trim().split(/\s+/).filter(Boolean);
   const query = args.join(" ");
 
-  if (!['song', 'video', 'vid', 'mp4'].includes(cmd)) return;
+  if (!['song1', 'play1', 'vid', 'mp4'].includes(cmd)) return;
 
   if (!query) {
     return Matrix.sendMessage(m.from, { text: "❌ Please provide a video name or a YouTube link.\nExample:\n*.video Alone*\n*.video https://youtu.be/example*" }, { quoted: m });
@@ -35,7 +35,7 @@ const video = async (m, Matrix) => {
 
   try {
     // Call API to fetch video details
-    const apiUrl = `https://ditzdevs-ytdl-api.hf.space/api/ytmp3?url=${videoUrl}`;
+    const apiUrl = ("https://apis.davidcyriltech.my.id/youtube/mp3?url=" + encodeURIComponent(_0x165324) + "&apikey=" + "gifted");
     const { data } = await axios.get(apiUrl);
 
     if (!data.success) {
