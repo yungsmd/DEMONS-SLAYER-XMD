@@ -1,162 +1,66 @@
-import pkg, { prepareWAMessageMedia } from '@whiskeysockets/baileys';
-const { generateWAMessageFromContent, proto } = pkg;
-import pkgg from 'nayan-media-downloader';
-const { tikdown } = pkgg;
-import config from '../../config.cjs';
+import fetch from 'node-fetch';
 
+import config from '../../config.cjs'; // Ensure config.cjs has your bot settings
 
-const searchResultsMap = new Map();
-let searchIndex = 1;
+const downloadTikTokVideo = async (m, gss) => {
 
-const tiktokCommand = async (m, Matrix) => {
-  let selectedListId;
-  const selectedButtonId = m?.message?.templateButtonReplyMessage?.selectedId;
-  const interactiveResponseMessage = m?.message?.interactiveResponseMessage;
+  const prefix = config.PREFIX; // Get prefix from config.cjs
 
-  if (interactiveResponseMessage) {
-    const paramsJson = interactiveResponseMessage.nativeFlowResponseMessage?.paramsJson;
-    if (paramsJson) {
-      const params = JSON.parse(paramsJson);
-      selectedListId = params.id;
-    }
-  }
+  const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
 
-  const selectedId = selectedListId || selectedButtonId;
+  const args = m.body.slice(prefix.length + cmd.length).trim().split(' ');
 
-  const prefix = config.PREFIX;
-const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
-const text = m.body.slice(prefix.length + cmd.length).trim();
+  const url = args[0]; // TikTok video URL
 
-  const validCommands = ['tiktok1', 'tt', 'ttdl'];
+  const caption = args.slice(1).join(' ') || '> *Downloaded by Demon Slayer*'; // Default caption if none provided
+
+  // Allowed TikTok download commands
+  const validCommands = ['tiktokdl', 'tt', 'tiktok'];
 
   if (validCommands.includes(cmd)) {
-    if (!text) {
-      return m.reply('Please provide a TikTok URL.');
+
+    if (!url) {
+      return m.reply('Please provide a TikTok video URL.');
     }
+
+    // API endpoint to fetch video
+    const apiUrl = `https://bk9.fun/download/tiktok?url=${encodeURIComponent(url)}`;
 
     try {
-      await m.React("🕘");
 
+      // Fetch request to the TikTok downloader API
+      const response = await fetch(apiUrl);
 
-      const tikTokData = await tikdown(text);
-      if (!tikTokData.status) {
-        await m.reply('No results found.');
-        await m.React("❌");
-        return;
+      // Check if the response is not okay (any status other than 200)
+      if (!response.ok) {
+        const errorText = await response.text(); // Get the error text from the response
+        console.error(`API Error: Status Code ${response.status}, Response Text: ${errorText}`);
+        throw new Error(`API Error ${response.status}: ${errorText}`);
       }
 
+      const data = await response.json();
+      console.log('API response data:', data);
 
-      searchResultsMap.set(searchIndex, tikTokData);
+      // Extract the HD video URL from the response
+      const videoUrl = data?.BK9?.BK9 || null;
 
+      if (!videoUrl) throw new Error('Video URL not found in API response.');
 
-      const currentResult = searchResultsMap.get(searchIndex);
-      const buttons = [
-        {
-          "name": "quick_reply",
-          "buttonParamsJson": JSON.stringify({
-            display_text: "🎦 Video",
-            id: `ttmedia_video_${searchIndex}`
-          })
-        },
-        {
-          "name": "quick_reply",
-          "buttonParamsJson": JSON.stringify({
-            display_text: "🎵 Audio",
-            id: `ttmedia_audio_${searchIndex}`
-          })
-        }
-      ];
+      // Send the HD video with caption
+      await gss.sendMessage(m.from, { video: { url: videoUrl }, caption });
 
-      const msg = generateWAMessageFromContent(m.from, {
-        viewOnceMessage: {
-          message: {
-            messageContextInfo: {
-              deviceListMetadata: {},
-              deviceListMetadataVersion: 2
-            },
-            interactiveMessage: proto.Message.InteractiveMessage.create({
-              body: proto.Message.InteractiveMessage.Body.create({
-                text: `TikTok Download\n\nTitle: ${currentResult.data.title}\nAuthor: ${currentResult.data.author.nickname}\nViews: ${currentResult.data.view}\nDuration: ${currentResult.data.duration}s\n`
-              }),
-              footer: proto.Message.InteractiveMessage.Footer.create({
-                text: "Made By Demo Slayer"
-              }),
-              header: proto.Message.InteractiveMessage.Header.create({
-                 ...(await prepareWAMessageMedia({ image: { url: `https://telegra.ph/file/fbbe1744668b44637c21a.jpg` } }, { upload: Matrix.waUploadToServer })),
-                title: "",
-                gifPlayback: true,
-                subtitle: "",
-                hasMediaAttachment: false 
-              }),
-              nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-                buttons
-              }),
-              contextInfo: {
-                quotedMessage: m.message,
-                mentionedJid: [m.sender],
-                forwardingScore: 9999,
-                isForwarded: true,
-              }
-            }),
-          },
-        },
-      }, {});
+      // Optionally, delete the original command message after sending the video (for Baileys)
+      await gss.sendMessage(m.key.remoteJid, { delete: m.key });
 
-      await Matrix.relayMessage(msg.key.remoteJid, msg.message, {
-        messageId: msg.key.id
-      });
-      await m.React("✅");
-
-      searchIndex += 1; 
     } catch (error) {
-      console.error("Error processing your request:", error);
-      await m.reply('Error processing your request.');
-      await m.React("❌");
+
+      console.error('Error downloading TikTok video:', error.message);
+      m.reply(`Failed to download TikTok video. Error: ${error.message}. Please try again later.`);
+
     }
-  } else if (selectedId) { 
-    if (selectedId.startsWith('ttmedia_')) {
-      const parts = selectedId.split('_');
-      const type = parts[1];
-      const key = parseInt(parts[2]);
-      const selectedMedia = searchResultsMap.get(key);
 
-      if (selectedMedia) {
-        try {
-          const videoUrl = selectedMedia.data.video;
-          const audioUrl = selectedMedia.data.audio;
-          let finalMediaBuffer, mimeType, content;
-
-          if (type === 'video') {
-            finalMediaBuffer = await getStreamBuffer(videoUrl);
-            mimeType = 'video/mp4';
-          } else if (type === 'audio') {
-            finalMediaBuffer = await getStreamBuffer(audioUrl);
-            mimeType = 'audio/mpeg';
-          }
-
-          const fileSizeInMB = finalMediaBuffer.length / (1024 * 1024);
-
-          if (type === 'video' && fileSizeInMB <= 300) {
-            content = { video: finalMediaBuffer, mimetype: 'video/mp4', caption: '> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴇᴛʜɪx-ᴍᴅ' };
-          } else if (type === 'audio' && fileSizeInMB <= 300) {
-            content = { audio: finalMediaBuffer, mimetype: 'audio/mpeg', caption: '> © ᴘᴏᴡᴇʀᴇᴅ ʙʏ ᴇᴛʜɪx-ᴍᴅ' };
-          }
-
-          await Matrix.sendMessage(m.from, content, { quoted: m });
-        } catch (error) {
-          console.error("Error processing your request:", error);
-          await m.reply('Error processing your request.');
-          await m.React("❌");
-        }
-      }
-    }
   }
+
 };
 
-const getStreamBuffer = async (url) => {
-  const response = await fetch(url);
-  const buffer = await response.arrayBuffer();
-  return Buffer.from(buffer);
-};
-
-export default tiktokCommand
+export default downloadTikTokVideo;
