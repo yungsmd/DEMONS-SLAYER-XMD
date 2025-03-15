@@ -5,12 +5,11 @@ import pkg from '@whiskeysockets/baileys';
 const { generateWAMessageFromContent, proto } = pkg;
 import config from '../../config.cjs';
 
-
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
-const chatHistoryFile = path.resolve(__dirname, '../mistral_history.json');
+const chatHistoryFile = path.resolve(__dirname, '../deepseek_history.json');
 
-const mistralSystemPrompt = "you are a good assistant.";
+const assistantPrompt = "You are a helpful AI assistant.";
 
 async function readChatHistoryFromFile() {
     try {
@@ -45,7 +44,7 @@ async function deleteChatHistory(chatHistory, userId) {
     await writeChatHistoryToFile(chatHistory);
 }
 
-const mistral = async (m, Matrix) => {
+const deepSeekAI = async (m, Matrix) => {
     const chatHistory = await readChatHistoryFromFile();
     const text = m.body.toLowerCase();
 
@@ -56,58 +55,97 @@ const mistral = async (m, Matrix) => {
     }
 
     const prefix = config.PREFIX;
-const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
-const prompt = m.body.slice(prefix.length + cmd.length).trim();
+    const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
+    const prompt = m.body.slice(prefix.length + cmd.length).trim();
 
-    const validCommands = ['deepseek', 'gpt', 'mistral'];
-      // Check user input
-        if (!q) return reply("*Please provide a query for ChatGPT.*\n\nExample:\n.gpt What is AI?");
+    const validCommands = ['ai', 'gpt', 'deepseek'];
 
-        const text = encodeURIComponent(q); // Encode user query
+    if (validCommands.includes(cmd)) {
+        if (!prompt) {
+            await Matrix.sendMessage(m.from, { text: 'Please provide a prompt.' }, { quoted: m });
+            return;
+        }
 
-        const url = `https://api.siputzx.my.id/api/ai/deepseek-r1?content=${text}`;
+        try {
+            const senderChatHistory = chatHistory[m.sender] || [];
+            const messages = [
+                { role: "system", content: assistantPrompt },
+                ...senderChatHistory,
+                { role: "user", content: prompt }
+            ];
 
-        console.log('Requesting URL:', url); // Debug log
+            await m.React("💻");
 
-        const response = await axios.get(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0',
-                'Accept': 'application/json',
+            // Construct API URL with the user's prompt
+            const apiUrl = `https://api.siputzx.my.id/api/ai/deepseek-r1?content=${encodeURIComponent(prompt)}`;
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
-        });
 
-        console.log('Full API Response:', response.data); // Debug log
+            const responseData = await response.json();
+            const answer = responseData.result || "I couldn't generate a response.";
 
-        if (!response.data || response.data.status !== 200 || !response.data.success) {
-            return reply("❌ No valid response from the GPT API. Please try again later.");
+            await updateChatHistory(chatHistory, m.sender, { role: "user", content: prompt });
+            await updateChatHistory(chatHistory, m.sender, { role: "assistant", content: answer });
+
+            // Check if response contains code
+            const codeMatch = answer.match(/```([\s\S]*?)```/);
+
+            if (codeMatch) {
+                const code = codeMatch[1];
+
+                let msg = generateWAMessageFromContent(m.from, {
+                    viewOnceMessage: {
+                        message: {
+                            messageContextInfo: {
+                                deviceListMetadata: {},
+                                deviceListMetadataVersion: 2
+                            },
+                            interactiveMessage: proto.Message.InteractiveMessage.create({
+                                body: proto.Message.InteractiveMessage.Body.create({
+                                    text: answer
+                                }),
+                                footer: proto.Message.InteractiveMessage.Footer.create({
+                                    text: "> *Made By Demon Slayer*"
+                                }),
+                                header: proto.Message.InteractiveMessage.Header.create({
+                                    title: "",
+                                    subtitle: "",
+                                    hasMediaAttachment: false
+                                }),
+                                nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
+                                    buttons: [
+                                        {
+                                            name: "cta_copy",
+                                            buttonParamsJson: JSON.stringify({
+                                                display_text: "Copy Code",
+                                                id: "copy_code",
+                                                copy_code: code
+                                            })
+                                        }
+                                    ]
+                                })
+                            })
+                        }
+                    }
+                }, {});
+
+                await Matrix.relayMessage(msg.key.remoteJid, msg.message, {
+                    messageId: msg.key.id
+                });
+            } else {
+                await Matrix.sendMessage(m.from, { text: answer }, { quoted: m });
+            }
+
+            await m.React("✅");
+        } catch (err) {
+            await Matrix.sendMessage(m.from, { text: "Something went wrong." }, { quoted: m });
+            console.error('Error: ', err);
+            await m.React("❌");
         }
-
-        const gptResponse = response.data.result.prompt; // Updated structure
-
-        if (!gptResponse) {
-            return reply("❌ The API returned an unexpected format. Please try again later.");
-        }
-
-        const formattedInfo = `${gptResponse}`;
-
-        await reply(formattedInfo); // Sending only text response
-
-    } catch (error) {
-        console.error("Error in GPT command:", error);
-
-        if (error.response) {
-            console.log("Error Response Data:", error.response.data);
-        } else {
-            console.log("Error Details:", error.message);
-        }
-
-        const errorMessage = `
-❌ An error occurred while processing the GPT command.
-🛠 *Error Details*:
-${error.message}
-
-Please report this issue or try again later.
-        `.trim();
-        return reply(errorMessage);
     }
-});
+};
+
+export default deepSeekAI;
