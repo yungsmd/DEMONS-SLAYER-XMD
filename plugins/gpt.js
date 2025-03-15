@@ -1,17 +1,14 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 import fetch from 'node-fetch';
-import pkg from '@whiskeysockets/baileys';
-const { generateWAMessageFromContent, proto } = pkg;
-import config from '../../config.cjs';
 
 const __filename = new URL(import.meta.url).pathname;
 const __dirname = path.dirname(__filename);
-const chatHistoryFile = path.resolve(__dirname, '../deepseek_history.json');
+const chatHistoryFile = path.resolve(__dirname, '../gpt_history.json');
 
-const assistantPrompt = "You are a helpful AI assistant.";
+const systemPrompt = "You are a helpful assistant providing detailed and friendly responses.";
 
-async function readChatHistoryFromFile() {
+async function readChatHistory() {
     try {
         const data = await fs.readFile(chatHistoryFile, "utf-8");
         return JSON.parse(data);
@@ -20,11 +17,11 @@ async function readChatHistoryFromFile() {
     }
 }
 
-async function writeChatHistoryToFile(chatHistory) {
+async function writeChatHistory(chatHistory) {
     try {
         await fs.writeFile(chatHistoryFile, JSON.stringify(chatHistory, null, 2));
     } catch (err) {
-        console.error('Error writing chat history to file:', err);
+        console.error('Error writing chat history:', err);
     }
 }
 
@@ -36,116 +33,56 @@ async function updateChatHistory(chatHistory, sender, message) {
     if (chatHistory[sender].length > 20) {
         chatHistory[sender].shift();
     }
-    await writeChatHistoryToFile(chatHistory);
+    await writeChatHistory(chatHistory);
 }
 
-async function deleteChatHistory(chatHistory, userId) {
-    delete chatHistory[userId];
-    await writeChatHistoryToFile(chatHistory);
+async function deleteChatHistory(chatHistory, sender) {
+    delete chatHistory[sender];
+    await writeChatHistory(chatHistory);
 }
 
-const deepSeekAI = async (m, Matrix) => {
-    const chatHistory = await readChatHistoryFromFile();
-    const text = m.body.toLowerCase();
+export default {
+    command: ['gpt'],
+    operate: async ({ m, reply, text }) => {
+        if (!text) return reply("*Please ask a question*");
 
-    if (text === "/forget") {
-        await deleteChatHistory(chatHistory, m.sender);
-        await Matrix.sendMessage(m.from, { text: 'Conversation deleted successfully' }, { quoted: m });
-        return;
-    }
-
-    const prefix = config.PREFIX;
-    const cmd = m.body.startsWith(prefix) ? m.body.slice(prefix.length).split(' ')[0].toLowerCase() : '';
-    const prompt = m.body.slice(prefix.length + cmd.length).trim();
-
-    const validCommands = ['ai', 'gpt', 'deepseek'];
-
-    if (validCommands.includes(cmd)) {
-        if (!prompt) {
-            await Matrix.sendMessage(m.from, { text: 'Please provide a prompt.' }, { quoted: m });
-            return;
+        const chatHistory = await readChatHistory();
+        
+        if (text === "/forget") {
+            await deleteChatHistory(chatHistory, m.sender);
+            return reply("*Conversation history deleted!*");
         }
 
         try {
-            const senderChatHistory = chatHistory[m.sender] || [];
+            const senderHistory = chatHistory[m.sender] || [];
             const messages = [
-                { role: "system", content: assistantPrompt },
-                ...senderChatHistory,
-                { role: "user", content: prompt }
+                { role: "system", content: systemPrompt },
+                ...senderHistory,
+                { role: "user", content: text }
             ];
 
-            await m.React("💻");
-
-            // Construct API URL with the user's prompt
-            const apiUrl = `https://api.siputzx.my.id/api/ai/deepseek-r1?content=${encodeURIComponent(prompt)}`;
+            const apiUrl = `https://api.siputzx.my.id/api/ai/gpt3?prompt=${encodeURIComponent(systemPrompt)}&content=${encodeURIComponent(text)}`;
             const response = await fetch(apiUrl);
+            const result = await response.json();
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (!result.status || !result.data) {
+                return reply("*Please try again later or try another command!*");
             }
 
-            const responseData = await response.json();
-            const answer = responseData.result || "I couldn't generate a response.";
-
-            await updateChatHistory(chatHistory, m.sender, { role: "user", content: prompt });
+            const answer = result.data;
+            await updateChatHistory(chatHistory, m.sender, { role: "user", content: text });
             await updateChatHistory(chatHistory, m.sender, { role: "assistant", content: answer });
 
-            // Check if response contains code
+            // Check for code snippets
             const codeMatch = answer.match(/```([\s\S]*?)```/);
-
             if (codeMatch) {
-                const code = codeMatch[1];
-
-                let msg = generateWAMessageFromContent(m.from, {
-                    viewOnceMessage: {
-                        message: {
-                            messageContextInfo: {
-                                deviceListMetadata: {},
-                                deviceListMetadataVersion: 2
-                            },
-                            interactiveMessage: proto.Message.InteractiveMessage.create({
-                                body: proto.Message.InteractiveMessage.Body.create({
-                                    text: answer
-                                }),
-                                footer: proto.Message.InteractiveMessage.Footer.create({
-                                    text: "> *Made By Demon Slayer*"
-                                }),
-                                header: proto.Message.InteractiveMessage.Header.create({
-                                    title: "",
-                                    subtitle: "",
-                                    hasMediaAttachment: false
-                                }),
-                                nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.create({
-                                    buttons: [
-                                        {
-                                            name: "cta_copy",
-                                            buttonParamsJson: JSON.stringify({
-                                                display_text: "Copy Code",
-                                                id: "copy_code",
-                                                copy_code: code
-                                            })
-                                        }
-                                    ]
-                                })
-                            })
-                        }
-                    }
-                }, {});
-
-                await Matrix.relayMessage(msg.key.remoteJid, msg.message, {
-                    messageId: msg.key.id
-                });
-            } else {
-                await Matrix.sendMessage(m.from, { text: answer }, { quoted: m });
+                return reply(`🔹 *Here's your code snippet:* \n\n\`\`\`${codeMatch[1]}\`\`\``);
             }
 
-            await m.React("✅");
-        } catch (err) {
-            await Matrix.sendMessage(m.from, { text: "Something went wrong." }, { quoted: m });
-            console.error('Error: ', err);
-            await m.React("❌");
+            reply(answer);
+        } catch (error) {
+            console.error('Error fetching response from GPT API:', error);
+            reply("An error occurred while fetching the response from GPT API.");
         }
     }
 };
-
-export default deepSeekAI;
