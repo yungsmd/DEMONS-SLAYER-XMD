@@ -33,7 +33,11 @@ const config = {
   SUDO_NUMBER: process.env.SUDO_NUMBER || "254740007567",
   GEMINI_KEY: process.env.GEMINI_KEY || "AIzaSyCUPaxfIdZawsKZKqCqJcC-GWiQPCXKTDc",
   WELCOME: process.env.WELCOME !== undefined ? process.env.WELCOME === 'true' : false, 
-};
+]
 
+  // Anti Left Feature
+  ANTI_LEFT: process.env.ANTI_LEFT !== undefined ? process.env.ANTI_LEFT === 'true' : true,
+  ANTI_LEFT_MSG: process.env.ANTI_LEFT_MSG || "*leaving not allowed in this group! You've been added back automatically.*"
+};
 
 module.exports = config;
