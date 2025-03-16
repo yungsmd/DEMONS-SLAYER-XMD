@@ -35,6 +35,7 @@ const config = {
 };
 
 // Debugging: Log the AUTO_BIO value to ensure it's set correctly
-console.log("AUTO_BIO:", config.AUTO_BIO);
+console.log("AUTO_BIO from .env:", process.env.AUTO_BIO);
+console.log("AUTO_BIO in config:", config.AUTO_BIO);
 
 module.exports = config;
