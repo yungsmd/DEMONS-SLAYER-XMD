@@ -15,12 +15,7 @@
       "description": "mode public or self",
       "required": true,
       "value": "public"
-    },
-    "ANTI_DELETE": {
-      "description": "Set to true for anti delete",
-      "required": true,
-      "value": "true"
-    },
+        },
     "AUTO_STATUS_SEEN": {
       "description": "make it true if you want bot to view status",
       "required": false,
@@ -32,7 +27,7 @@
       "value": "true"
     },
     "AUTOLIKE_EMOJI": {
-      "description": "Input your custom status like emoji else leave blank to use default => 💚",
+      "description": "Input your custom status like emoji else leave blank to use default => 🫨",
       "required": false,
       "value": "🫨"
       },
@@ -111,4 +106,4 @@
       "url": "https://github.com/clhuang/heroku-buildpack-webp-binaries.git"
     }
   ]
-      }
+}
