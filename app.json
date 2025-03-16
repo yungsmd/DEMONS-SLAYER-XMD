@@ -16,6 +16,11 @@
       "required": true,
       "value": "public"
     },
+    "ANTI_DELETE": {
+      "description": "Set to true for anti delete",
+      "required": true,
+      "value": "true"
+    },
     "AUTO_STATUS_SEEN": {
       "description": "make it true if you want bot to view status",
       "required": false,
