@@ -34,4 +34,7 @@ const config = {
   WELCOME: process.env.WELCOME !== undefined ? process.env.WELCOME === 'true' : false,
 };
 
+// Debugging: Log the AUTO_BIO value to ensure it's set correctly
+console.log("AUTO_BIO:", config.AUTO_BIO);
+
 module.exports = config;
