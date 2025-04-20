@@ -1,4 +1,4 @@
-module.exports = async (context) => {
+module.exports = async (context) => 
     const { client, m } = context;
 
     let sender = null;
