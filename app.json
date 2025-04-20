@@ -1,35 +1,35 @@
 {
-  "name": "Demon-slayer",
-  "description": "Ok 3 devs made it.",
+  "name": "oluthe",
+  "description": "its your boy oluthe.",
   "logo": "https://files.catbox.moe/5kvvfg.jpg",
-  "keywords": ["Demon-Slayer"],
+  "keywords": ["oluthe innit"],
   "repository": "https://github.com/Demon-Slayer2/DEMONS-SLAYER-XMD",
   "stack": "container",
   "env": { 
       "SESSION_ID": {
-      "description": "your session id",
+      "description": "Demo-Slayer~4JYlDb7Q#UtaPEu8nk8H3egEb0Lq47DJpk5pDbsDn83Res4sACf0",
       "required": true,
       "value": ""
     },
     "MODE": {
       "description": "mode public or self",
       "required": true,
-      "value": "public"
+      "value": "self"
         },
     "AUTO_STATUS_SEEN": {
       "description": "make it true if you want bot to view status",
-      "required": false,
+      "required": true,
       "value": "true"
         },
     "AUTOLIKE_STATUS": {
       "description": "Make it true if you want bot to read and like status else leave blank",
       "required": false,
-      "value": "true"
+      "value": "false"
     },
     "AUTOLIKE_EMOJI": {
       "description": "Input your custom status like emoji else leave blank to use default => 🫨",
-      "required": false,
-      "value": "🫨"
+      "required": true,
+      "value": "😎"
       },
     "AUTO_REACT": {
       "description": "make it true if you want a bot to react on messages",
@@ -49,7 +49,7 @@
     "AUTO_TYPING": {
       "description": "make it true if you want bot to show typing",
       "required": false,
-      "value": ""
+      "value": "true"
     },
     "AUTO_RECORDING": {
       "description": "make it true if you want bot to show recording audio",
@@ -84,12 +84,12 @@
     "ANTILINK": {
       "description": "make it true if you want to enable auto delete links",
       "required": false,
-      "value": ""  
+      "value": "true"  
     },
     "PREFIX": {
       "description": "Your Bot Prefix default (.)",
       "required": false,
-      "value": ""
+      "value": "."
     }
     },
     "buildpacks": [
